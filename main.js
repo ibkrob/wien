@@ -41,8 +41,10 @@ let layerControl = L.control.layers(
     let mrk= L.marker ([stephansdom.lat, stephansdom.lng]).addTo(sightLayer);
 
     sightLayer.addTo(map);
-    
+
     // Maßstab hinzufügen
     L.control.scale({
         imperial:false
     }).addTo(map);
+
+    L.control.fullscreen().addTo(map);
