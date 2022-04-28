@@ -24,5 +24,25 @@ let layerControl = L.control.layers(
         "BasemapAT Terrain": L.tileLayer.provider("BasemapAT.terrain"),
         "BasemapAT Surface": L.tileLayer.provider("BasemapAT.surface"),
         "BasemapAT High DPI": L.tileLayer.provider("BasemapAT.highdpi"),
-        "BasemapAT Ortophoto": L.tileLayer.provider("BasemapAT.orthofoto")
+        "BasemapAT Ortofoto": L.tileLayer.provider("BasemapAT.orthofoto"),
+        "BasemapAT Beschriftung und Orthopfoto": L.layerGroup([
+            L.tileLayer.provider("BasemapAT.orthofoto"),
+            L.tileLayer.provider("BasemapAT.overlay")
+        ])
+        
+    }).addTo(map);
+
+    layerControl.expand()
+
+    let sightLayer=L.featureGroup();
+
+    layerControl.addOverlay(sightLayer);
+
+    let mrk= L.marker ([stephansdom.lat, stephansdom.lng]).addTo(sightLayer);
+
+    sightLayer.addTo(map);
+    
+    // Maßstab hinzufügen
+    L.control.scale({
+        imperial:false
     }).addTo(map);
