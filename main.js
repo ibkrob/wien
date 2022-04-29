@@ -1,12 +1,12 @@
 /* OGD Wien Beispiel */
 
 let stephansdom = {
-lat: 48.208943,
-lng: 16.373118,
-title: "Stephansdom"
+    lat: 48.208943,
+    lng: 16.373118,
+    title: "Stephansdom"
 };
 
-let startLayer = L.tileLayer.provider("BasemapAT.basemap");
+let startLayer = L.tileLayer.provider("BasemapAT.grau");
 
 let map = L.map("map", {
     center: [stephansdom.lat, stephansdom.lng],
@@ -18,14 +18,14 @@ let map = L.map("map", {
 })
 
 let layerControl = L.control.layers(
-    {   "BasemapAT Standard": startLayer,
-        "BasemapAT Grau": L.tileLayer.provider("BasemapAT.grau"),
-        "BasemapAT Overlay": L.tileLayer.provider("BasemapAT.overlay"),
-        "BasemapAT Terrain": L.tileLayer.provider("BasemapAT.terrain"),
-        "BasemapAT Surface": L.tileLayer.provider("BasemapAT.surface"),
-        "BasemapAT High DPI": L.tileLayer.provider("BasemapAT.highdpi"),
-        "BasemapAT Ortofoto": L.tileLayer.provider("BasemapAT.orthofoto"),
-        "BasemapAT Beschriftung und Orthopfoto": L.layerGroup([
+    {   "Basemap Standard": startLayer,
+        "Basemap Grau": L.tileLayer.provider("BasemapAT.grau"),
+        "Basemap Overlay": L.tileLayer.provider("BasemapAT.overlay"),
+        "Basemap Terrain": L.tileLayer.provider("BasemapAT.terrain"),
+        "Basemap Surface": L.tileLayer.provider("BasemapAT.surface"),
+        "Basemap High DPI": L.tileLayer.provider("BasemapAT.highdpi"),
+        "Basemap Ortofoto": L.tileLayer.provider("BasemapAT.orthofoto"),
+        "Basemap mit Beschriftung und Orthopfoto": L.layerGroup([
             L.tileLayer.provider("BasemapAT.orthofoto"),
             L.tileLayer.provider("BasemapAT.overlay")
         ])
@@ -35,8 +35,7 @@ let layerControl = L.control.layers(
     layerControl.expand()
 
     let sightLayer=L.featureGroup();
-
-    layerControl.addOverlay(sightLayer);
+    layerControl.addOverlay(sightLayer, "Sehenswürdigkeiten");
 
     let mrk= L.marker ([stephansdom.lat, stephansdom.lng]).addTo(sightLayer);
 
