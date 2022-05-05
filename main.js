@@ -49,7 +49,7 @@ L.control.scale({
 L.control.fullscreen().addTo(map);
 
 let miniMap = new L.Control.MiniMap(
-    L.tileLayer.provider("BasemapAT"),{
+    L.tileLayer.provider("BasemapAT"), {
         toggleDisplay: true
     }
 ).addTo(map);
@@ -60,15 +60,15 @@ async function loadSites(url) {
     let response = await fetch(url);
     let geojson = await response.json();
     //console.log(geojson);
-    
+
     let overlay = L.featureGroup();
     layerControl.addOverlay(overlay, "Sehenswürdigkeiten");
     overlay.addTo(map);
 
     L.geoJSON(geojson, {
-        pointToLayer: function(geoJsonPoint,latlng){
+        pointToLayer: function (geoJsonPoint, latlng) {
             //console.log(geoJsonPoint);
-            let popup=`
+            let popup = `
             <img src="${geoJsonPoint.properties.THUMBNAIL}"
             alt=""></br>
             <strong>${geoJsonPoint.properties.NAME}</strong>
@@ -77,17 +77,17 @@ async function loadSites(url) {
             <a href="${geoJsonPoint.properties.WEITERE_INF}
             ">Weblink<</a>
             `;
-            return L.marker(latlng,{
+            return L.marker(latlng, {
                 icon: L.icon({
-                    iconUrl:"icons/photo.png",
+                    iconUrl: "icons/photo.png",
                     iconAnchor: [16, 37],
                     popupAnchor: [0, -37]
                 })
-                
-            }).bindPopup(popup);
-    }
 
-}).addTo(overlay)
+            }).bindPopup(popup);
+        }
+
+    }).addTo(overlay)
 }
 
 loadSites("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:SEHENSWUERDIGOGD&srsName=EPSG:4326&outputFormat=json");
@@ -98,7 +98,7 @@ async function loadStops(url) {
     let response = await fetch(url);
     let geojson = await response.json();
     //console.log(geojson);
-    
+
 
     // Add to overlay
     let overlay = L.featureGroup();
@@ -106,25 +106,25 @@ async function loadStops(url) {
     overlay.addTo(map);
 
     L.geoJSON(geojson, {
-        pointToLayer: function(geoJsonPoint,latlng){
+        pointToLayer: function (geoJsonPoint, latlng) {
             //console.log(geoJsonPoint);
-            let popup=`
+            let popup = `
             <img src="${geoJsonPoint.properties.THUMBNAIL}"
                 alt=""><br>
             <strong>${geoJsonPoint.properties.LINE_NAME}</strong><hr>
             Station ${geoJsonPoint.properties.STAT_NAME}<br>
             `;
-            return L.marker(latlng,{
+            return L.marker(latlng, {
                 icon: L.icon({
-                    iconUrl:"icons/bus_${geoJsonPoint.properties.LINE_ID}.png",
+                    iconUrl: `icons/bus_${geoJsonPoint.properties.LINE_ID}.png`,
                     iconAnchor: [16, 37],
                     popupAnchor: [0, -37]
                 })
-                
-            }).bindPopup(popup);
-    }
 
-}).addTo(overlay);
+            }).bindPopup(popup);
+        }
+
+    }).addTo(overlay);
 }
 
 loadStops("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:TOURISTIKHTSVSLOGD&srsName=EPSG:4326&outputFormat=json");
