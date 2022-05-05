@@ -110,7 +110,7 @@ async function loadStops(url) {
             `;
             return L.marker(latlng,{
                 icon: L.icon({
-                    iconUrl:"icons/bus.png",
+                    iconUrl:"icons/bus_${geoJsonPoint.properties.LINE_ID}.png",
                     iconAnchor: [16, 37],
                     popupAnchor: [0, -37]
                 })
@@ -122,6 +122,13 @@ async function loadStops(url) {
 }
 
 loadStops("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:TOURISTIKHTSVSLOGD&srsName=EPSG:4326&outputFormat=json");
+
+
+//CRS
+
+
+
+
 
 //Linien Vienna Sightseeing
 
