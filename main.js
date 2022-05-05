@@ -11,43 +11,52 @@ let startLayer = L.tileLayer.provider("BasemapAT.grau");
 let map = L.map("map", {
     center: [stephansdom.lat, stephansdom.lng],
     zoom: 12,
-    layers:[
+    layers: [
         startLayer
     ]
 
 })
 
-let layerControl = L.control.layers(
-    {   "Basemap Standard": startLayer,
-        "Basemap Grau": L.tileLayer.provider("BasemapAT.grau"),
-        "Basemap Overlay": L.tileLayer.provider("BasemapAT.overlay"),
-        "Basemap Terrain": L.tileLayer.provider("BasemapAT.terrain"),
-        "Basemap Surface": L.tileLayer.provider("BasemapAT.surface"),
-        "Basemap High DPI": L.tileLayer.provider("BasemapAT.highdpi"),
-        "Basemap Ortofoto": L.tileLayer.provider("BasemapAT.orthofoto"),
-        "Basemap mit Beschriftung und Orthopfoto": L.layerGroup([
-            L.tileLayer.provider("BasemapAT.orthofoto"),
-            L.tileLayer.provider("BasemapAT.overlay")
-        ])
-        
-    }).addTo(map);
+let layerControl = L.control.layers({
+    "Basemap Standard": startLayer,
+    "Basemap Grau": L.tileLayer.provider("BasemapAT.grau"),
+    "Basemap Overlay": L.tileLayer.provider("BasemapAT.overlay"),
+    "Basemap Terrain": L.tileLayer.provider("BasemapAT.terrain"),
+    "Basemap Surface": L.tileLayer.provider("BasemapAT.surface"),
+    "Basemap High DPI": L.tileLayer.provider("BasemapAT.highdpi"),
+    "Basemap Ortofoto": L.tileLayer.provider("BasemapAT.orthofoto"),
+    "Basemap mit Beschriftung und Orthopfoto": L.layerGroup([
+        L.tileLayer.provider("BasemapAT.orthofoto"),
+        L.tileLayer.provider("BasemapAT.overlay")
+    ])
 
-    layerControl.expand()
+}).addTo(map);
 
-    let sightLayer=L.featureGroup();
-    layerControl.addOverlay(sightLayer, "Sehenswürdigkeiten");
+layerControl.expand()
 
-    let mrk= L.marker ([stephansdom.lat, stephansdom.lng]).addTo(sightLayer);
+let sightLayer = L.featureGroup();
+layerControl.addOverlay(sightLayer, "Sehenswürdigkeiten");
 
-    sightLayer.addTo(map);
+let mrk = L.marker([stephansdom.lat, stephansdom.lng]).addTo(sightLayer);
 
-    // Maßstab hinzufügen
-    L.control.scale({
-        imperial:false
-    }).addTo(map);
+sightLayer.addTo(map);
 
-    L.control.fullscreen().addTo(map);
+// Maßstab hinzufügen
+L.control.scale({
+    imperial: false
+}).addTo(map);
 
-    let miniMap= new L.Control.MiniMap(
-        L.tileLayer.provider("BasemapAT")
-    ).addTo(map);
+L.control.fullscreen().addTo(map);
+
+let miniMap = new L.Control.MiniMap(
+    L.tileLayer.provider("BasemapAT")
+).addTo(map);
+
+async function loadSites(url) {
+    let response = await fetch(url);
+    let geojson = await response.json();
+    console.log(geojson);
+}
+
+
+loadSites("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:SEHENSWUERDIGOGD&srsName=EPSG:4326&outputFormat=json")
