@@ -76,7 +76,12 @@ async function loadSites(url) {
             <a href="${geoJsonPoint.properties.WEITERE_INF}
             ">Weblink<</a>
             `;
-            return L.marker(latlng).bindPopup(popup);
+            return L.marker(latlng,{
+                icon: L.icon({
+                    iconUrl:"icons/photo.png"
+                })
+                
+            }).bindPopup(popup);
     }
 
 }).addTo(overlay);
