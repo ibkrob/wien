@@ -1,7 +1,7 @@
 /* OGD Wien Beispiel */
 
 let stephansdom = {
-    lat: 48.208943,
+    lat: 48.208493,
     lng: 16.373118,
     title: "Stephansdom"
 };
@@ -49,11 +49,13 @@ L.control.scale({
 L.control.fullscreen().addTo(map);
 
 let miniMap = new L.Control.MiniMap(
-    L.tileLayer.provider("BasemapAT")
+    L.tileLayer.provider("BasemapAT"),{
+        toggleDisplay: true
+    }
 ).addTo(map);
 
 
-// Sehenswürdigkeiten
+// Sehenswürdigkeiten asu OGD laden
 async function loadSites(url) {
     let response = await fetch(url);
     let geojson = await response.json();
@@ -64,7 +66,7 @@ async function loadSites(url) {
     overlay.addTo(map);
 
     L.geoJSON(geojson, {
-        pointTOLayer: function(geoJsonPoint,latlng){
+        pointToLayer: function(geoJsonPoint,latlng){
             //console.log(geoJsonPoint);
             let popup=`
             <img src="${geoJsonPoint.properties.THUMBNAIL}"
@@ -85,7 +87,7 @@ async function loadSites(url) {
             }).bindPopup(popup);
     }
 
-}).addTo(overlay);
+}).addTo(overlay)
 }
 
 loadSites("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:SEHENSWUERDIGOGD&srsName=EPSG:4326&outputFormat=json");
@@ -97,16 +99,20 @@ async function loadStops(url) {
     let geojson = await response.json();
     //console.log(geojson);
     
+
+    // Add to overlay
     let overlay = L.featureGroup();
-    layerControl.addOverlay(overlay, "Vienna Sightseeing Stops");
+    layerControl.addOverlay(overlay, "Vienna Haltestellen");
     overlay.addTo(map);
 
     L.geoJSON(geojson, {
-        pointTOLayer: function(geoJsonPoint,latlng){
+        pointToLayer: function(geoJsonPoint,latlng){
             //console.log(geoJsonPoint);
             let popup=`
-            <strong>${geoJsonPoint.properties.LINE_NAME}</strong><br>
-            Station ${geoJsonPoint.properties.STAT_NAME}
+            <img src="${geoJsonPoint.properties.THUMBNAIL}"
+                alt=""><br>
+            <strong>${geoJsonPoint.properties.LINE_NAME}</strong><hr>
+            Station ${geoJsonPoint.properties.STAT_NAME}<br>
             `;
             return L.marker(latlng,{
                 icon: L.icon({
