@@ -70,7 +70,6 @@ async function loadSites(url) {
             <img src="${geoJsonPoint.properties.THUMBNAIL}"
             alt=""></br>
             <strong>${geoJsonPoint.properties.NAME}</strong>
-            
             <hr>
             Adresse: ${geoJsonPoint.properties.ADRESSE}<br>
             <a href="${geoJsonPoint.properties.WEITERE_INF}
@@ -78,7 +77,9 @@ async function loadSites(url) {
             `;
             return L.marker(latlng,{
                 icon: L.icon({
-                    iconUrl:"icons/photo.png"
+                    iconUrl:"icons/photo.png",
+                    iconAnchor: [16, 37],
+                    popupAnchor: [0, -37]
                 })
                 
             }).bindPopup(popup);
