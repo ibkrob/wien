@@ -88,7 +88,7 @@ async function loadStops(url) {
 
 loadStops("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:TOURISTIKHTSVSLOGD&srsName=EPSG:4326&outputFormat=json");
 
-//Haltestellen Vienna Sightseeing
+//Linien Vienna Sightseeing
 
 async function loadLines(url) {
     let response = await fetch(url);
@@ -105,4 +105,22 @@ async function loadLines(url) {
 
 
 loadLines("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:TOURISTIKLINIEVSLOGD&srsName=EPSG:4326&outputFormat=json");
+
+//Fußgängerzone Vienna 
+
+async function loadZone(url) {
+    let response = await fetch(url);
+    let geojson = await response.json();
+    //console.log(geojson);
+    
+    let overlay = L.featureGroup();
+    layerControl.addOverlay(overlay, "Vienna Fußgängerzone");
+    overlay.addTo(map);
+
+    L.geoJSON(geojson).addTo(overlay);
+
+}
+
+
+loadZone("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:FUSSGEHERZONEOGD&srsName=EPSG:4326&outputFormat=json");
 
