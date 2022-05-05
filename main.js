@@ -56,6 +56,7 @@ async function loadSites(url) {
     let response = await fetch(url);
     let geojson = await response.json();
     console.log(geojson);
+    L.geoJSON(geojson).addTo(map);
 }
 
 
