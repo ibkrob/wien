@@ -134,8 +134,12 @@ async function loadHotels(url) {
     let response = await fetch(url);
     let geojson = await response.json(); 
     console.log(geojson);
-    let overlay = L.featureGroup();
-    layerControl.addOverlay(overlay,"Hotels");
+
+    let overlay = L.markerClusterGroup({
+        disableClusteringAtZoom:17
+    });
+    
+    layerControl.addOverlay(overlay,"Hotels und Unterkünfte");
     overlay.addTo(map)
     L.geoJSON(geojson, {
         pointToLayer: function(geoJsonPoint,latlng){
@@ -192,26 +196,92 @@ async function loadLines(url) {
     let response = await fetch(url);
     let geojson = await response.json(); 
     console.log(geojson);
+    
     let overlay = L.featureGroup();
     layerControl.addOverlay(overlay,"Liniennetz Vienna Sightseeing");
-    overlay.addTo(map)
-    L.geoJSON(geojson).addTo(overlay);
+    overlay.addTo(map);
+    L.geoJSON(geojson,{
+        style: function(feature) {
+            //console.log(feature)
+
+            let colors =
+            {
+                "Red Line" : "#FF4136",
+                "Yellow Line": "#FFDC00",
+                "Blue Line": "#0074D9",
+                "Grey Line": "#AAAAAA",
+                "Orange Line": "#FF851B",
+
+            };
+            return{
+                color: `${colors[feature.properties.LINE_NAME]}`,
+                weight: 4,
+                dashArray: [10, 6]
+
+            }
+        }
+
+
+
+    }).bindPopup(function (layer) {
+        return `
+        <h4>${layer.feature.properties.LINE_NAME} </h4>
+        <h4>${layer.feature.properties.LINE_NAME} </h4>
+        <br>
+        nach: ${layer.feature.properties.TO_NAME} 
+        `;
+
+    }).addTo(overlay);
 }
 
-//loadLines("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:TOURISTIKLINIEVSLOGD&srsName=EPSG:4326&outputFormat=json");
+
+loadLines("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:TOURISTIKLINIEVSLOGD&srsName=EPSG:4326&outputFormat=json");
 
 
 async function loadZones(url) {
     let response = await fetch(url);
     let geojson = await response.json(); 
     console.log(geojson);
+
     let overlay = L.featureGroup();
     layerControl.addOverlay(overlay,"Fußgängerzonen Wien");
     overlay.addTo(map)
-    L.geoJSON(geojson).addTo(overlay);
-}
 
-//loadZones("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:FUSSGEHERZONEOGD&srsName=EPSG:4326&outputFormat=json");
+    L.geoJSON(geojson,{
+        style: function (feature){
+        return{
+            color: "#F012BE",
+            weight: 1,
+            opacity: 0.1,
+            fillOpacity:0.1,
+        }
+        }
+
+
+    }).bindPopup(function (layer) {
+            return `
+            <p>Fußgängerzone ${layer.feature.properties.ADRESSE} </h4>
+            <p>${layer.feature.properties.ZEITRAUM} </p>
+            <br>
+            <p>${layer.feature.properties.AUSN_TEXT} </p>
+            `;
+    
+        
+        }).addTo(overlay)
+        
+    }
+
+
+
+/*Markers Cluster
+let overlay = L.markerClusterGroup();
+markers.addLayer(L.marker(getRandomLatLng(map)));
+    
+        //... Add more layers ...
+map.addLayer(markers);
+*/
+
+loadZones("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:FUSSGEHERZONEOGD&srsName=EPSG:4326&outputFormat=json");
 
     
 
