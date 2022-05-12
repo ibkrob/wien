@@ -55,7 +55,7 @@ let miniMap = new L.Control.MiniMap(
 ).addTo(map);
 
 
-// Sehenswürdigkeiten asu OGD laden
+// Sehenswürdigkeiten aus OGD laden
 async function loadSites(url) {
     let response = await fetch(url);
     let geojson = await response.json();
@@ -128,7 +128,8 @@ async function loadStops(url) {
 loadStops("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:TOURISTIKHTSVSLOGD&srsName=EPSG:4326&outputFormat=json");
 
 
-// Unterkünfte
+// Hotels und Unterkünfte mit Icons als Overlay visualiseren
+
 async function loadHotels(url) {
     let response = await fetch(url);
     let geojson = await response.json(); 
@@ -152,6 +153,7 @@ async function loadHotels(url) {
                 <a href="mailto:${geoJsonPoint.properties.KONTAKT_EMAIL}
                 ">E-Mail</a>
             `;
+            // if, else if, else Abfrage des Attributs BETRIEBSART
             if (geoJsonPoint.properties.BETRIEBSART == "H") {
                 return L.marker(latlng, {
                     icon: L.icon({
