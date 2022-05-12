@@ -37,6 +37,20 @@
         integrity="sha512-efbAfGnrnjA+hLwOLu91W034fBGPsMwZMVCTwLUI2PDX/m7rOiuhYZ+D2mZ8rKcpC/I/7pdgoL8T4eYvMHNoQg=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+    <!--Marker Cluster plugin-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/leaflet.markercluster.js"
+        integrity="sha512-OFs3W4DIZ5ZkrDhBFtsCP6JXtMEDGmhl0QPlmWYBJay40TT1n3gt2Xuw8Pf/iezgW9CdabjkNChRqozl/YADmg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css"
+        integrity="sha512-6ZCLMiYwTeli2rVh3XAPxy3YoR5fVxGdH/pz+KMCzRY2M65Emgkw00Yqmhh8qLGeYQ3LbVZGdmOX9KUjSKr0TA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.5.3/MarkerCluster.Default.css"
+        integrity="sha512-6ZCLMiYwTeli2rVh3XAPxy3YoR5fVxGdH/pz+KMCzRY2M65Emgkw00Yqmhh8qLGeYQ3LbVZGdmOX9KUjSKr0TA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!--Leaflet Providers plugin-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-providers/1.13.0/leaflet-providers.min.js"
@@ -60,7 +74,21 @@
         <article>
             <div id="map"></div>
         </article>
+        <article>
+            <form id="searchForm">
+                <input type="text" name="hotel" placeholder="Hotel suchen ..." list=""searchList>
+                <input type="button" name="suchen" value="Anzeigen">
+                <input type="reset" value="Reset">
+            </form>
+            <datalist id="searchList">
+                <option value="eins"></option>
+                <option value="zwei"></option>
+                <option value="drei"></option>
+            </datalist>
+        </article>
+
         <footer>
+
             <strong>Datenquellen:</strong>
             <nav>
                 <a href="https://digitales.wien.gv.at/open-data/">DigitalesWien</a>
