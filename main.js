@@ -135,6 +135,11 @@ async function loadHotels(url) {
     let geojson = await response.json(); 
     console.log(geojson);
 
+    //Hotels nach Name
+    geojson.features.sort(function(a,b){
+        return a.properties.BETRIEB.toLowerCase() > b.properties.BETRIEB.toLowerCase()
+    })
+
     let overlay = L.markerClusterGroup({
         disableClusteringAtZoom:17
     });
@@ -149,7 +154,7 @@ async function loadHotels(url) {
             console.log(`<option value="geoJsonPoint.properties.BETRIEB}"></option>`);
             
             console.log(document.querySelector("#searchList"));
-            
+
             let popup = `
                 
                 <strong>${geoJsonPoint.properties.BETRIEB}</strong>
@@ -193,6 +198,27 @@ async function loadHotels(url) {
         }
 
     }).addTo(overlay);
+    let form= documentquerySelector("#searchForm");
+    console.log(form.hotel);
+    form.suchen.onclick =function() {
+        console.log(form.hotel.value);
+        hotelsLayer.eachLayer(function(marker){
+            console.log(marker),
+            console.log(marker.getLatLng())
+            console.log(marker.getPopup())
+            console.log(marker.feature.properties.BETRIEB)
+
+            if (form.hotel.value == marker.feature.properties.BETRIEB)
+            {
+                //console.log(marker.getLatLng())
+                //console.log(marker.getPopup());
+                //marker.openPopup();
+                console.log(marker.getLatLng(),17);
+                console.log(marker.feature.properties.BETRIEB);
+            }
+        })
+    }
+
 }
 
 loadHotels("https://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:UNTERKUNFTOGD&srsName=EPSG:4326&outputFormat=json")
